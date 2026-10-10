@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="All Rights Reserved"
+[[mods]]
+modId="witherstormteleport"
+version="1.1.0"
+displayName="Wither Storm Teleport"
+description='''Teleports the Wither Storm to its tracked target across dimensions once its phase reaches 5 or higher and it is not distracted, applying Darkness to the target. Segments are moved along with it. The dimensions where teleporting is disabled are listed in the config file config/storm_teleport.json.'''
+[[dependencies.witherstormteleport]]
+modId="forge"
+mandatory=true
+versionRange="[47,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.witherstormteleport]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.21)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.witherstormteleport]]
+modId="witherstormmod"
+mandatory=true
+versionRange="[4.2.1,)"
+ordering="NONE"
+side="BOTH"

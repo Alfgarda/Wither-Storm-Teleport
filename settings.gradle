@@ -1,0 +1,19 @@
+pluginManagement {
+    repositories {
+        maven {
+            name = 'AliyunPlugin'
+            url = 'https://maven.aliyun.com/repository/gradle-plugin'
+        }
+        maven {
+            name = 'AliyunPublic'
+            url = 'https://maven.aliyun.com/repository/public'
+        }
+        maven {
+            name = 'MinecraftForge'
+            url = 'http://127.0.0.1:8099/'
+            allowInsecureProtocol = true
+        }
+        gradlePluginPortal()
+    }
+}
+rootProject.name = 'witherstormteleport'

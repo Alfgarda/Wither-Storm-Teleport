@@ -1,0 +1,51 @@
+plugins {
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+}
+version = '1.1.0'
+group = 'com.cwsm.witherstormteleport'
+base {
+    archivesName = 'witherstormteleport'
+}
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+}
+repositories {
+    maven {
+        name = 'AliyunPublic'
+        url = 'https://maven.aliyun.com/repository/public'
+    }
+    maven {
+        name = 'MinecraftForge'
+        url = 'http://127.0.0.1:8099/'
+        allowInsecureProtocol = true
+    }
+    maven {
+        name = 'MojangPiston'
+        url = 'http://127.0.0.1:8098/'
+        allowInsecureProtocol = true
+    }
+    flatDir {
+        dirs 'libs'
+    }
+}
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.20.1-47.2.0'
+    implementation fg.deobf('witherstormmod:witherstormmod:1.20.1-4.2.1')
+}
+jar {
+    manifest {
+        attributes([
+            'Specification-Title': 'witherstormteleport',
+            'Specification-Vendor': 'cwsm',
+            'Specification-Version': '1',
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.jar.archiveVersion,
+            'Implementation-Vendor': 'cwsm',
+            'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
