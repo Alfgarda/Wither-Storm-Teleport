@@ -25,17 +25,20 @@ this.setter=setter;
 }
 @Override
 protected void init(){
-this.input=new EditBox(this.font,this.width/2-60,this.height/2-16,120,20,this.title);
+int center=this.width/2;
+this.input=new EditBox(this.font,center-60,this.height/2-16,120,20,this.title);
 this.input.setMaxLength(9);
 this.input.setValue(Integer.toString(this.getter.getAsInt()));
 this.addRenderableWidget(this.input);
 this.setInitialFocus(this.input);
-this.addRenderableWidget(Button.builder(Component.translatable("witherstormteleport.config.save"),button->this.apply()).bounds(this.width/2-60,this.height/2+16,120,20).build());
-this.addRenderableWidget(Button.builder(Component.translatable("witherstormteleport.config.done"),button->this.onClose()).bounds(this.width/2-60,this.height/2+44,120,20).build());
+int buttonY=this.height/2+16;
+this.addRenderableWidget(Button.builder(Component.translatable("witherstormteleport.config.save"),button->this.apply()).bounds(center-60,buttonY,120,20).build());
+this.addRenderableWidget(Button.builder(Component.translatable("witherstormteleport.config.done"),button->this.onClose()).bounds(center-60,buttonY+22,120,20).build());
 }
 private void apply(){
+String value=this.input.getValue().trim();
 try{
-this.setter.accept(Integer.parseInt(this.input.getValue().trim()));
+this.setter.accept(Integer.parseInt(value));
 WitherStormTeleport.saveConfig();
 this.status=Component.translatable("witherstormteleport.gui.saved");
 this.statusColor=0x55FF55;
@@ -58,10 +61,11 @@ this.renderBackground(guiGraphics);
 super.render(guiGraphics,mouseX,mouseY,partialTick);
 guiGraphics.drawCenteredString(this.font,this.title,this.width/2,this.height/2-56,0xFFFFFF);
 guiGraphics.drawCenteredString(this.font,Component.translatable(this.hintKey),this.width/2,this.height/2-38,0xA0A0A0);
-guiGraphics.drawCenteredString(this.font,this.status,this.width/2,this.height/2+72,this.statusColor);
+guiGraphics.drawCenteredString(this.font,this.status,this.width/2,this.height/2+60,this.statusColor);
 }
 @Override
 public void onClose(){
+WitherStormTeleport.saveConfig();
 this.minecraft.setScreen(this.parent);
 }
 }
