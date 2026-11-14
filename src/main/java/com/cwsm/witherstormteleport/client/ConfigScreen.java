@@ -1,40 +1,24 @@
 package com.cwsm.witherstormteleport.client;
 import com.cwsm.witherstormteleport.WitherStormTeleport;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
+import java.nio.file.Path;
+import net.minecraft.Util;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-public class ConfigScreen extends Screen{
-private final Screen parent;
+import net.minecraftforge.fml.loading.FMLPaths;
+public class ConfigScreen extends WstScreen{
 public ConfigScreen(Screen parent){
-super(Component.translatable("witherstormteleport.config.title"));
-this.parent=parent;
+super(Component.translatable("witherstormteleport.config.title"),parent);
 }
-@Override
 protected void init(){
-int center=this.width/2;
-int top=this.height/2-52;
-this.addRenderableWidget(Button.builder(Component.translatable("witherstormteleport.config.blacklist"),button->this.minecraft.setScreen(new DimensionBlacklistScreen(this))).bounds(center-120,top,240,20).build());
-this.addRenderableWidget(Button.builder(Component.translatable("witherstormteleport.config.cooldown",WitherStormTeleport.getCooldownSeconds()),button->this.minecraft.setScreen(new NumericSettingScreen(this,"witherstormteleport.config.cooldown.title","witherstormteleport.gui.cooldown_hint",WitherStormTeleport::getCooldownSeconds,WitherStormTeleport::setCooldownSeconds))).bounds(center-120,top+24,240,20).build());
-this.addRenderableWidget(Button.builder(Component.translatable("witherstormteleport.config.delay",WitherStormTeleport.getTeleportDelaySeconds()),button->this.minecraft.setScreen(new NumericSettingScreen(this,"witherstormteleport.config.delay.title","witherstormteleport.gui.delay_hint",WitherStormTeleport::getTeleportDelaySeconds,WitherStormTeleport::setTeleportDelaySeconds))).bounds(center-120,top+48,240,20).build());
-this.addRenderableWidget(Button.builder(this.distractedLabel(),button->{
-WitherStormTeleport.toggleNoTeleportWhileDistracted();
+Component open=Component.literal(">");
+int top=this.rowsTop(3);
+this.addRow(Component.translatable("witherstormteleport.config.main_rules"),open,button->this.minecraft.setScreen(new BehaviorRulesScreen(this)),top);
+this.addRow(Component.translatable("witherstormteleport.config.main_misc"),open,button->this.minecraft.setScreen(new MiscSettingsScreen(this)),top+ROW_HEIGHT);
+this.addRow(Component.translatable("witherstormteleport.config.open_json"),open,button->{
 WitherStormTeleport.saveConfig();
-button.setMessage(this.distractedLabel());
-}).bounds(center-120,top+72,240,20).build());
-this.addRenderableWidget(Button.builder(Component.translatable("witherstormteleport.config.done"),button->this.onClose()).bounds(center-50,top+104,100,20).build());
-}
-private Component distractedLabel(){
-return Component.translatable("witherstormteleport.gui.toggle",Component.translatable("witherstormteleport.config.distracted"),Component.translatable(WitherStormTeleport.isNoTeleportWhileDistracted()?"witherstormteleport.gui.on":"witherstormteleport.gui.off"));
-}
-@Override
-public void render(GuiGraphics guiGraphics,int mouseX,int mouseY,float partialTick){
-this.renderBackground(guiGraphics);
-super.render(guiGraphics,mouseX,mouseY,partialTick);
-guiGraphics.drawCenteredString(this.font,this.title,this.width/2,this.height/2-82,0xFFFFFF);
-}
-@Override
-public void onClose(){
-this.minecraft.setScreen(this.parent);
+Path path=FMLPaths.CONFIGDIR.get().resolve("wst.json");
+Util.getPlatform().openFile(path.toFile());
+},top+ROW_HEIGHT*2);
+this.addFooterCentered(Component.translatable("witherstormteleport.config.done"),pressed->this.onClose());
 }
 }
